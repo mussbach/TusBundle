@@ -9,52 +9,12 @@ declare(strict_types=1);
 namespace EFrane\TusBundle\Controller;
 
 
-use EFrane\TusBundle\Event\UploadCompleteEvent;
-use EFrane\TusBundle\Event\UploadCreatedEvent;
-use EFrane\TusBundle\Event\UploadMergedEvent;
-use EFrane\TusBundle\Event\UploadProgressEvent;
-use EFrane\TusBundle\Middleware\MiddlewareCollection;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use TusPhp\Events\TusEvent;
-use TusPhp\Tus\Server;
+use EFrane\TusBundle\Bridge\ServerBridge;
 
 class TusController
 {
-    private function createEventHandler(string $eventClass, EventDispatcherInterface $eventDispatcher): callable
+    public function tusAction(ServerBridge $serverBridge)
     {
-        return static function (TusEvent $tusEvent) use ($eventClass, $eventDispatcher) {
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $eventDispatcher->dispatch(new $eventClass($tusEvent), $eventClass::NAME);
-        };
-    }
-
-    public function tusAction(
-        EventDispatcherInterface $eventDispatcher,
-        MiddlewareCollection $middlewareCollection,
-        Server $server
-    ) {
-        $server->event()->addListener(
-            'tus-server.upload.created',
-            $this->createEventHandler(UploadCreatedEvent::class, $eventDispatcher)
-        );
-
-        $server->event()->addListener(
-            'tus-server.upload.progress',
-            $this->createEventHandler(UploadProgressEvent::class, $eventDispatcher)
-        );
-
-        $server->event()->addListener(
-            'tus-server.upload.complete',
-            $this->createEventHandler(UploadCompleteEvent::class, $eventDispatcher)
-        );
-
-        $server->event()->addListener(
-            'tus-server.upload.merged',
-            $this->createEventHandler(UploadMergedEvent::class, $eventDispatcher)
-        );
-
-        $server->middleware()->add($middlewareCollection->all());
-
-        return $server-> serve();
+        return $serverBridge->getServer()->serve();
     }
 }

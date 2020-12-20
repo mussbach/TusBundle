@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace EFrane\TusBundle\Bundle\DependencyInjection;
 
 
-use EFrane\TusBundle\Bundle\DependencyInjection\Compiler\TusMiddlewareCompilerPass;
+use EFrane\TusBundle\Bridge\ServerBridge;
 use EFrane\TusBundle\Controller\TusController;
 use EFrane\TusBundle\Middleware\MiddlewareCollection;
 use EFrane\TusBundle\Routing\RouteLoader;
@@ -40,6 +40,7 @@ class TusExtension extends Extension
         $this->registerController($definitions);
         $this->registerMiddleware($containerBuilder, $definitions);
         $this->registerRouteLoader($configuration['api_path'], $definitions);
+        $this->registerServerBridge($definitions);
         $this->registerTus($configuration, $definitions);
 
         return $definitions;
@@ -59,6 +60,7 @@ class TusExtension extends Extension
         $fileStore = new Definition(FileStore::class, [
             '$cacheDir' => $configuration['cache_dir'],
         ]);
+        $fileStore->setLazy(true);
 
         $definitions[FileStore::class] = $fileStore;
 
@@ -68,6 +70,7 @@ class TusExtension extends Extension
 
         $server->addMethodCall('setUploadDir', [$configuration['upload_dir']]);
         $server->addMethodCall('setApiPath', [$configuration['api_path']]);
+        $server->setLazy(true);
 
         $definitions[Server::class] = $server;
     }
@@ -76,6 +79,7 @@ class TusExtension extends Extension
     {
         $controller = new Definition(TusController::class);
         $controller->addTag('controller.service_arguments');
+        $controller->setLazy(true);
 
         $definitions[TusController::class] = $controller;
     }
@@ -85,7 +89,17 @@ class TusExtension extends Extension
         $containerBuilder->registerForAutoconfiguration(TusMiddleware::class)->addTag('tus.middleware');
 
         $middlewareCollection = new Definition(MiddlewareCollection::class);
+        $middlewareCollection->setLazy(true);
 
         $definitions[MiddlewareCollection::class] = $middlewareCollection;
+    }
+
+    private function registerServerBridge(array &$definitions): void
+    {
+        $serverBridge = new Definition(ServerBridge::class);
+        $serverBridge->setAutowired(true);
+        $serverBridge->setLazy(true);
+
+        $definitions[ServerBridge::class] = $serverBridge;
     }
 }
