@@ -9,12 +9,15 @@ declare(strict_types=1);
 namespace EFrane\TusBundle\Bundle\DependencyInjection;
 
 
+use EFrane\TusBundle\Bundle\DependencyInjection\Compiler\TusMiddlewareCompilerPass;
 use EFrane\TusBundle\Controller\TusController;
+use EFrane\TusBundle\Middleware\MiddlewareCollection;
 use EFrane\TusBundle\Routing\RouteLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use TusPhp\Cache\FileStore;
+use TusPhp\Middleware\TusMiddleware;
 use TusPhp\Tus\Server;
 
 class TusExtension extends Extension
@@ -35,6 +38,7 @@ class TusExtension extends Extension
         $definitions = [];
 
         $this->registerController($definitions);
+        $this->registerMiddleware($containerBuilder, $definitions);
         $this->registerRouteLoader($configuration['api_path'], $definitions);
         $this->registerTus($configuration, $definitions);
 
@@ -74,5 +78,14 @@ class TusExtension extends Extension
         $controller->addTag('controller.service_arguments');
 
         $definitions[TusController::class] = $controller;
+    }
+
+    private function registerMiddleware(ContainerBuilder $containerBuilder, array &$definitions)
+    {
+        $containerBuilder->registerForAutoconfiguration(TusMiddleware::class)->addTag('tus.middleware');
+
+        $middlewareCollection = new Definition(MiddlewareCollection::class);
+
+        $definitions[MiddlewareCollection::class] = $middlewareCollection;
     }
 }

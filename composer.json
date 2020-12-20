@@ -1,6 +1,6 @@
 {
     "name": "efrane/tus-bundle",
-    "description": "A Symfony Bundle for akitpokhrel/tus-php",
+    "description": "A Symfony Bundle for ankitpokhrel/tus-php",
     "type": "symfony-bundle",
     "require": {
         "php": ">=7.2",

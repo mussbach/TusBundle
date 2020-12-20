@@ -9,11 +9,11 @@ declare(strict_types=1);
 namespace EFrane\TusBundle\Controller;
 
 
-use EFrane\TusBundle\Event\Event;
 use EFrane\TusBundle\Event\UploadCompleteEvent;
 use EFrane\TusBundle\Event\UploadCreatedEvent;
 use EFrane\TusBundle\Event\UploadMergedEvent;
 use EFrane\TusBundle\Event\UploadProgressEvent;
+use EFrane\TusBundle\Middleware\MiddlewareCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TusPhp\Events\TusEvent;
 use TusPhp\Tus\Server;
@@ -28,8 +28,11 @@ class TusController
         };
     }
 
-    public function tusAction(EventDispatcherInterface $eventDispatcher, Server $server)
-    {
+    public function tusAction(
+        EventDispatcherInterface $eventDispatcher,
+        MiddlewareCollection $middlewareCollection,
+        Server $server
+    ) {
         $server->event()->addListener(
             'tus-server.upload.created',
             $this->createEventHandler(UploadCreatedEvent::class, $eventDispatcher)
@@ -50,6 +53,8 @@ class TusController
             $this->createEventHandler(UploadMergedEvent::class, $eventDispatcher)
         );
 
-        return $server->serve();
+        $server->middleware()->add($middlewareCollection->all());
+
+        return $server-> serve();
     }
 }
