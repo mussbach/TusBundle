@@ -13,6 +13,14 @@ use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
+
+/**
+ * Class RouteLoader.
+ *
+ * Register the route definitions required by the tus-server implementation.
+ *
+ * The routes are limited as much as tus allows in terms of http verbs.
+ */
 class RouteLoader extends Loader
 {
     /**
@@ -28,6 +36,7 @@ class RouteLoader extends Loader
     /**
      * @param mixed       $resource
      * @param string|null $type
+     * @return bool
      */
     public function supports($resource, $type = null): bool
     {
@@ -59,6 +68,7 @@ class RouteLoader extends Loader
             ],
             [], '', [],
             [
+                'GET',
                 'POST',
                 'HEAD',
                 'PATCH',
