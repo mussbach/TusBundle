@@ -34,6 +34,10 @@ class Configuration implements ConfigurationInterface
             ->info('Path to the tus api')
             ->defaultValue('/_tus/upload');
 
+        $children->integerNode('max_upload_size')
+            ->info('Max upload size in bytes, 0 means infinite')
+            ->defaultValue(0);
+
         return $treeBuilder;
     }
 }

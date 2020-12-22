@@ -40,7 +40,7 @@ class TusExtension extends Extension
         $this->registerController($definitions);
         $this->registerMiddleware($containerBuilder, $definitions);
         $this->registerRouteLoader($configuration['api_path'], $definitions);
-        $this->registerServerBridge($definitions);
+        $this->registerServerBridge($configuration['max_upload_size'], $definitions);
         $this->registerTus($configuration, $definitions);
 
         return $definitions;
@@ -94,11 +94,12 @@ class TusExtension extends Extension
         $definitions[MiddlewareCollection::class] = $middlewareCollection;
     }
 
-    private function registerServerBridge(array &$definitions): void
+    private function registerServerBridge(int $maxUploadSize, array &$definitions): void
     {
         $serverBridge = new Definition(ServerBridge::class);
         $serverBridge->setAutowired(true);
         $serverBridge->setLazy(true);
+        $serverBridge->setArgument('$maxUploadSize', $maxUploadSize);
 
         $definitions[ServerBridge::class] = $serverBridge;
     }

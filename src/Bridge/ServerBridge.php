@@ -20,10 +20,15 @@ class ServerBridge
      */
     protected $server;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, MiddlewareCollection $middlewareCollection, Server $server)
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        int $maxUploadSize,
+        MiddlewareCollection $middlewareCollection,
+        Server $server)
     {
         $server->setDispatcher($eventDispatcher);
         $server->middleware()->add($middlewareCollection->all());
+        $server->setMaxUploadSize($maxUploadSize);
 
         $this->server = $server;
     }
