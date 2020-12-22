@@ -27,7 +27,11 @@ class ServerBridge
         Server $server)
     {
         $server->setDispatcher($eventDispatcher);
-        $server->middleware()->add($middlewareCollection->all());
+
+        foreach ($middlewareCollection->all() as $middleware) {
+            $server->middleware()->add($middleware);
+        }
+
         $server->setMaxUploadSize($maxUploadSize);
 
         $this->server = $server;

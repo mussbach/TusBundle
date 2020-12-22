@@ -14,7 +14,7 @@ use TusPhp\Middleware\Middleware;
 class MiddlewareCollection
 {
     /** @var array<int,Middleware> */
-    private $middlewares = [];
+    private $middlewares;
 
     public function __construct(array $middlewares)
     {
