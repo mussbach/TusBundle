@@ -1,0 +1,10 @@
+{
+  "name": "tusbundle-docs",
+  "version": "-",
+  "description": "Docs for the Symfony Tus Bundle",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "vuepress": "^1.7.1"
+  }
+}
