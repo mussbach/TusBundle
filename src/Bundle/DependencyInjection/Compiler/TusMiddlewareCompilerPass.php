@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class TusMiddlewareCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $middlewares = array_map(
             static function (string $serviceId) {

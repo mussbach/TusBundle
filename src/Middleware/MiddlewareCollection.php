@@ -16,6 +16,10 @@ class MiddlewareCollection
     /** @var array<int,Middleware> */
     private $middlewares;
 
+    /**
+     * MiddlewareCollection constructor.
+     * @param array<Middleware> $middlewares
+     */
     public function __construct(array $middlewares)
     {
         $this->middlewares = $middlewares;

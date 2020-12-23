@@ -43,6 +43,10 @@ class RouteLoader extends Loader
         return 'tus_bundle' === $type;
     }
 
+    /**
+     * @param mixed       $resource
+     * @param string|null $type
+     */
     public function load($resource, $type = null): RouteCollection
     {
         $routes = new RouteCollection();

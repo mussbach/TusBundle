@@ -21,7 +21,7 @@ class TusExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    public function testExtensionCanLoad()
+    public function testExtensionCanLoad(): void
     {
         $this->load();
 

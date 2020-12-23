@@ -22,7 +22,10 @@ use TusPhp\Tus\Server;
 
 class TusExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    /**
+     * @param array<string,mixed> $configs
+     */
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $parsedConfiguration = $this->processConfiguration($configuration, $configs);
@@ -32,6 +35,7 @@ class TusExtension extends Extension
 
     /**
      * @param array<string,mixed> $configuration The parsed configuration for the bundle
+     * @return array<string, Definition>
      */
     private function getTusServiceDefinitions(ContainerBuilder $containerBuilder, array $configuration): array
     {
@@ -46,7 +50,10 @@ class TusExtension extends Extension
         return $definitions;
     }
 
-    private function registerRouteLoader($apiPath, array &$definitions): void
+    /**
+     * @param array<string,Definition> $definitions
+     */
+    private function registerRouteLoader(string $apiPath, array &$definitions): void
     {
         $routeLoader = new Definition(RouteLoader::class);
         $routeLoader->setArgument('$apiPath', $apiPath);
@@ -55,7 +62,11 @@ class TusExtension extends Extension
         $definitions[RouteLoader::class] = $routeLoader;
     }
 
-    private function registerTus($configuration, array &$definitions): void
+    /**
+     * @param array<string,mixed> $configuration
+     * @param array<string,Definition> $definitions
+     */
+    private function registerTus(array $configuration, array &$definitions): void
     {
         $fileStore = new Definition(FileStore::class, [
             '$cacheDir' => $configuration['cache_dir'],
@@ -75,6 +86,9 @@ class TusExtension extends Extension
         $definitions[Server::class] = $server;
     }
 
+    /**
+     * @param array<string,Definition> $definitions
+     */
     private function registerController(array &$definitions): void
     {
         $controller = new Definition(TusController::class);
@@ -84,7 +98,10 @@ class TusExtension extends Extension
         $definitions[TusController::class] = $controller;
     }
 
-    private function registerMiddleware(ContainerBuilder $containerBuilder, array &$definitions)
+    /**
+     * @param array<string,Definition> $definitions
+     */
+    private function registerMiddleware(ContainerBuilder $containerBuilder, array &$definitions): void
     {
         $containerBuilder->registerForAutoconfiguration(TusMiddleware::class)->addTag('tus.middleware');
 
@@ -94,6 +111,9 @@ class TusExtension extends Extension
         $definitions[MiddlewareCollection::class] = $middlewareCollection;
     }
 
+    /**
+     * @param array<string,Definition> $definitions
+     */
     private function registerServerBridge(int $maxUploadSize, array &$definitions): void
     {
         $serverBridge = new Definition(ServerBridge::class);
