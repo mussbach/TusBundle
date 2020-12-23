@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace EFrane\TusBundle\Bundle\DependencyInjection;
 
-
 use EFrane\TusBundle\Bridge\ServerBridge;
 use EFrane\TusBundle\Controller\TusController;
 use EFrane\TusBundle\Middleware\MiddlewareCollection;
@@ -35,6 +34,7 @@ class TusExtension extends Extension
 
     /**
      * @param array<string,mixed> $configuration The parsed configuration for the bundle
+     *
      * @return array<string, Definition>
      */
     private function getTusServiceDefinitions(ContainerBuilder $containerBuilder, array $configuration): array
@@ -63,7 +63,7 @@ class TusExtension extends Extension
     }
 
     /**
-     * @param array<string,mixed> $configuration
+     * @param array<string,mixed>      $configuration
      * @param array<string,Definition> $definitions
      */
     private function registerTus(array $configuration, array &$definitions): void
@@ -76,7 +76,7 @@ class TusExtension extends Extension
         $definitions[FileStore::class] = $fileStore;
 
         $server = new Definition(Server::class, [
-            '$cacheAdapter' => $fileStore
+            '$cacheAdapter' => $fileStore,
         ]);
 
         $server->addMethodCall('setUploadDir', [$configuration['upload_dir']]);

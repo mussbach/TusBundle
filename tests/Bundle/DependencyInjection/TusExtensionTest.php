@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace EFrane\TusBundle\Tests\Bundle\DependencyInjection;
 
-
 use EFrane\TusBundle\Bundle\DependencyInjection\TusExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 

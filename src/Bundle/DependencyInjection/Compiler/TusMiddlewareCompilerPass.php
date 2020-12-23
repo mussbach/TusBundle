@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace EFrane\TusBundle\Bundle\DependencyInjection\Compiler;
 
-
 use EFrane\TusBundle\Middleware\MiddlewareCollection;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

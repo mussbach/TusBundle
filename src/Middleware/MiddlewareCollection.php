@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace EFrane\TusBundle\Middleware;
 
-
 use TusPhp\Middleware\Middleware;
 
 class MiddlewareCollection
@@ -18,6 +17,7 @@ class MiddlewareCollection
 
     /**
      * MiddlewareCollection constructor.
+     *
      * @param array<Middleware> $middlewares
      */
     public function __construct(array $middlewares)

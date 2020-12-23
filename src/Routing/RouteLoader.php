@@ -8,11 +8,9 @@ declare(strict_types=1);
 
 namespace EFrane\TusBundle\Routing;
 
-
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-
 
 /**
  * Class RouteLoader.
@@ -36,7 +34,6 @@ class RouteLoader extends Loader
     /**
      * @param mixed       $resource
      * @param string|null $type
-     * @return bool
      */
     public function supports($resource, $type = null): bool
     {

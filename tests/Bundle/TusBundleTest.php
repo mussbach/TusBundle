@@ -8,10 +8,8 @@ declare(strict_types=1);
 
 namespace EFrane\TusBundle\Tests\Bundle;
 
-
 use EFrane\TusBundle\Bundle\TusBundle;
 use Nyholm\BundleTest\BaseBundleTestCase;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 class TusBundleTest extends BaseBundleTestCase
 {

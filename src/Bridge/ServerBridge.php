@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace EFrane\TusBundle\Bridge;
 
-
 use EFrane\TusBundle\Middleware\MiddlewareCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TusPhp\Tus\Server;
