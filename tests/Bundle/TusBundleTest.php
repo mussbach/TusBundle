@@ -11,6 +11,7 @@ namespace EFrane\TusBundle\Tests\Bundle;
 
 use EFrane\TusBundle\Bundle\TusBundle;
 use Nyholm\BundleTest\BaseBundleTestCase;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 class TusBundleTest extends BaseBundleTestCase
 {
@@ -21,14 +22,16 @@ class TusBundleTest extends BaseBundleTestCase
 
     public function testBundleRegistration(): void
     {
-        $kernel = $this->createKernel();
-        $kernel->boot();
+        $kernel = $this->getBootedKernel();
 
         self::assertInstanceOf(TusBundle::class, $kernel->getBundle('TusBundle'));
     }
 
-    public function testRegistersRoutes(): void
+    private function getBootedKernel(): \Nyholm\BundleTest\AppKernel
     {
-        $this->markTestSkipped('Next');
+        $kernel = $this->createKernel();
+        $kernel->boot();
+
+        return $kernel;
     }
 }
