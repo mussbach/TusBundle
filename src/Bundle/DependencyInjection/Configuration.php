@@ -24,7 +24,7 @@ class Configuration implements ConfigurationInterface
 
         $children->scalarNode('cache_dir')
             ->info('Directory for cached files')
-            ->defaultValue('%kernel.cache_dir%');
+            ->defaultValue('%kernel.cache_dir%/%kernel.environment%');
 
         $children->scalarNode('upload_dir')
             ->info('Directory for finished uploads')
@@ -33,10 +33,6 @@ class Configuration implements ConfigurationInterface
         $children->scalarNode('api_path')
             ->info('Path to the tus api')
             ->defaultValue('/_tus/upload');
-
-        $children->integerNode('max_upload_size')
-            ->info('Max upload size in bytes, 0 means infinite')
-            ->defaultValue(0);
 
         return $treeBuilder;
     }

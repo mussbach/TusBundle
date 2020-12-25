@@ -12,28 +12,42 @@ use EFrane\TusBundle\Middleware\MiddlewareCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TusPhp\Tus\Server;
 
-class ServerBridge
+class ServerBridge implements ServerBridgeInterface
 {
     /**
      * @var Server
      */
     protected $server;
 
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var MiddlewareCollection
+     */
+    private $middlewareCollection;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        int $maxUploadSize,
         MiddlewareCollection $middlewareCollection,
         Server $server)
     {
-        $server->setDispatcher($eventDispatcher);
-
-        foreach ($middlewareCollection->all() as $middleware) {
-            $server->middleware()->add($middleware);
-        }
-
-        $server->setMaxUploadSize($maxUploadSize);
-
+        $this->eventDispatcher = $eventDispatcher;
+        $this->middlewareCollection = $middlewareCollection;
         $this->server = $server;
+
+        $this->configure();
+    }
+
+    public function configure()
+    {
+        $this->server->setDispatcher($this->eventDispatcher);
+
+        foreach ($this->middlewareCollection->all() as $middleware) {
+            $this->server->middleware()->add($middleware);
+        }
     }
 
     public function getServer(): Server

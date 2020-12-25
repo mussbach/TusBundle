@@ -9,12 +9,16 @@ declare(strict_types=1);
 namespace EFrane\TusBundle\Bundle\DependencyInjection;
 
 use EFrane\TusBundle\Bridge\ServerBridge;
+use EFrane\TusBundle\Bridge\ServerBridgeInterface;
 use EFrane\TusBundle\Controller\TusController;
 use EFrane\TusBundle\Middleware\MiddlewareCollection;
 use EFrane\TusBundle\Routing\RouteLoader;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TusPhp\Cache\FileStore;
 use TusPhp\Middleware\TusMiddleware;
 use TusPhp\Tus\Server;
@@ -42,10 +46,14 @@ class TusExtension extends Extension
         $definitions = [];
 
         $this->registerController($definitions);
-        $this->registerMiddleware($containerBuilder, $definitions);
+        $this->registerMiddleware($definitions);
         $this->registerRouteLoader($configuration['api_path'], $definitions);
-        $this->registerServerBridge($configuration['max_upload_size'], $definitions);
+        $this->registerServerBridge($definitions);
         $this->registerTus($configuration, $definitions);
+
+        $containerBuilder->registerForAutoconfiguration(TusMiddleware::class)->addTag('tus.middleware');
+        $containerBuilder->registerForAutoconfiguration(ServerBridgeInterface::class);
+        $containerBuilder->setAlias(ServerBridgeInterface::class, new Alias(ServerBridge::class));
 
         return $definitions;
     }
@@ -101,10 +109,8 @@ class TusExtension extends Extension
     /**
      * @param array<string,Definition> $definitions
      */
-    private function registerMiddleware(ContainerBuilder $containerBuilder, array &$definitions): void
+    private function registerMiddleware(array &$definitions): void
     {
-        $containerBuilder->registerForAutoconfiguration(TusMiddleware::class)->addTag('tus.middleware');
-
         $middlewareCollection = new Definition(MiddlewareCollection::class);
         $middlewareCollection->setLazy(true);
 
@@ -114,13 +120,15 @@ class TusExtension extends Extension
     /**
      * @param array<string,Definition> $definitions
      */
-    private function registerServerBridge(int $maxUploadSize, array &$definitions): void
+    private function registerServerBridge(array &$definitions): void
     {
         $serverBridge = new Definition(ServerBridge::class);
-        $serverBridge->setAutowired(true);
         $serverBridge->setLazy(true);
-        $serverBridge->setArgument('$maxUploadSize', $maxUploadSize);
 
         $definitions[ServerBridge::class] = $serverBridge;
+
+        $interface = new Definition(ServerBridgeInterface::class);
+
+        $definitions[ServerBridgeInterface::class] = $interface;
     }
 }

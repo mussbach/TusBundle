@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace EFrane\TusBundle\Controller;
 
 use EFrane\TusBundle\Bridge\ServerBridge;
+use EFrane\TusBundle\Bridge\ServerBridgeInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,7 +18,7 @@ class TusController
     /**
      * @return Response|BinaryFileResponse
      */
-    public function tusAction(ServerBridge $serverBridge)
+    public function tusAction(ServerBridgeInterface $serverBridge)
     {
         return $serverBridge->getServer()->serve();
     }
