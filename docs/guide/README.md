@@ -16,10 +16,6 @@ release notes.
 composer require efrane/tus-bundle
 ```
 
-::: tip
-This Bundle is in the Contrib-Repo for Flex. To enable that, run `composer config extra.symfony.allow-contrib true`.
-:::
-
 ### If you do not have Symfony Flex:
 
 Enable the bundle in your `bundles.php`:
