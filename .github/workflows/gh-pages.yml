@@ -25,7 +25,7 @@ jobs:
     - name: "Install documentation dependencies"
       run: yarn --cwd docs install --frozen-lockfile
 
-    - name: "Install documentation dependencies"
+    - name: "Build documentation"
       run: yarn --cwd docs vuepress build .
 
     - name: GitHub Pages action
@@ -33,4 +33,5 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: docs/.vuepress/dist
+        cname: tus-bundle.efrane.com
 
