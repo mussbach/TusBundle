@@ -41,7 +41,7 @@ class ServerBridge implements ServerBridgeInterface
         $this->configure();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->server->setDispatcher($this->eventDispatcher);
 

@@ -13,7 +13,7 @@ use TusPhp\Tus\Server;
 
 interface ServerBridgeInterface
 {
-    public function configure();
+    public function configure(): void;
 
     public function getServer(): Server;
 }
