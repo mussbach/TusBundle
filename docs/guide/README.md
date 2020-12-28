@@ -2,12 +2,12 @@
 
 ## Introduction
 
-TusBundle is a Symfony Bundle wrapping [tus-php](https://github.com/ankitpokhrel/tus-php). 
+TusBundle is a Symfony Bundle wrapping [tus-php](https://github.com/ankitpokhrel/tus-php).
 The main motivation is to reduce the friction and manual typing when using `tus-php` with Symfony.
 
 ## Versions Support
 
-The Bundle currently supports Symfony **4.4** and **5.2**, changes to this will be published here in and in the 
+The Bundle currently supports Symfony **4.4** and **5.2**, changes to this will be published here in and in the
 release notes.
 
 ## Installation and Quickstart
@@ -73,7 +73,7 @@ class TusUploadEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string,string> 
+     * @return array<string,string>
      */
     public static function getSubscribedEvents(): array
     {
@@ -83,14 +83,14 @@ class TusUploadEventSubscriber implements EventSubscriberInterface
     }
 
     public function onUploadComplete(UploadComplete $completedEvent): void
-    { 
-        $this->files->storeTusUploadedFile($completedEvent->getFile()); 
+    {
+        $this->files->storeTusUploadedFile($completedEvent->getFile());
     }
 }
 ```
 
 ::: tip
-See [this gem by Matthias Noback](https://matthiasnoback.nl/2014/05/inject-a-repository-instead-of-an-entity-manager/#factory-service) 
+See [this gem by Matthias Noback](https://matthiasnoback.nl/2014/05/inject-a-repository-instead-of-an-entity-manager/#factory-service)
 on how to autowire your Doctrine repositories.
 :::
 
@@ -130,8 +130,8 @@ class IsRunningMiddleware implements TusMiddleware
 
 ## Taking full control of the server configuration
 
-Since the bundle registers all of it's services into Symfonys' dependency injection 
-container, you can easily take over full control of the server configuration. To do so, 
+Since the bundle registers all of it's services into Symfonys' dependency injection
+container, you can easily take over full control of the server configuration. To do so,
 you can assign a different class to `EFrane\TusBundle\Bridge\ServerBridgeInterface`:
 
 ```php
@@ -179,9 +179,9 @@ class CustomServerBridge extends ServerBridge
 ## Tips
 
 * Don't overwrite the `ServerBridge` to set the maximum upload size to `post_max_size` or any of the likes.
-  Tus fails uploads if the maximum upload size is less than this setting. Instead, you want to configure your
-  Tus Client(s) to use chunked uploading. You may pass a slightly lower value than `post_max_size` to the 
-  clients as chunk size.
+  Tus fails uploads if the size of a to-be-uploaded file is less than this setting. Instead, you want to
+  configure your Tus Client(s) to use chunked uploading. You may pass a slightly lower value than
+  `post_max_size` to the clients as chunk size.
 
-+ If uploads fail mysteriously, make sure that the destination directory (i.e. `upload_dir`) exists. 
++ If uploads fail mysteriously, make sure that the destination directory (i.e. `upload_dir`) exists.
   Neither this bundle nor the `tus-php` library doing the actual work take care of creating this directory.
