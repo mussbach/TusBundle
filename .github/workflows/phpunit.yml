@@ -8,6 +8,8 @@ on:
     paths:
       - '**.php'
       - 'phpunit.xml'
+      - 'composer.json'
+      - 'composer.lock'
 
 jobs:
   phpunit7_4:
