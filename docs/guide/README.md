@@ -28,6 +28,17 @@ return [
 ];
 ```
 
+This bundles contains route definitions, to load them, simply
+add 
+
+```yaml
+tus_bundle:
+  type: tus_bundle
+  resource: .
+```
+
+to your `routes.yaml`.
+
 If you need to make adjustments to the [default configuration](#default-configuration),
 you can run
 
