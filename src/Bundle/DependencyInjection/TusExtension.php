@@ -128,6 +128,7 @@ class TusExtension extends Extension
         $definitions[ServerBridge::class] = $serverBridge;
 
         $interface = new Definition(ServerBridgeInterface::class);
+        $interface->setClass(ServerBridge::class);
 
         $definitions[ServerBridgeInterface::class] = $interface;
     }
