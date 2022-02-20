@@ -5,10 +5,13 @@
 TusBundle is a Symfony Bundle wrapping [tus-php](https://github.com/ankitpokhrel/tus-php).
 The main motivation is to reduce the friction and manual typing when using `tus-php` with Symfony.
 
+[tus](https://tus.io) is a protocol for chunkable and resumable uploads implemented by the 
+[Uppy](https://uppy.io) uploader.
+
 ## Versions Support
 
-The Bundle currently supports Symfony **4.4** and **5.2**, changes to this will be published here in and in the
-release notes.
+The Bundle currently supports Symfony **4.4** and **5.x**, changes to this will be 
+published here in and in the release notes.
 
 ## Installation and Quickstart
 
@@ -60,7 +63,7 @@ at `config/packages/tus.yaml`.
 ## Events
 
 The Bundle wires the default event manager of your Symfony application into `tus-php`, which means, the
-[tus-php events]() can just be listened or subscribed to.
+[tus-php events](https://github.com/ankitpokhrel/tus-php#events) can just be listened or subscribed to.
 
 An example event subscriber might look like this:
 
@@ -195,4 +198,4 @@ class CustomServerBridge extends ServerBridge
   `post_max_size` to the clients as chunk size.
 
 + If uploads fail mysteriously, make sure that the destination directory (i.e. `upload_dir`) exists.
-  Neither this bundle nor the `tus-php` library doing the actual work take care of creating this directory.
+  Neither this bundle nor the `tus-php` library do the actual work to take care of creating this directory.
