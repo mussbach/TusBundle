@@ -11,25 +11,12 @@ namespace EFrane\TusBundle\Tests\Bundle;
 use EFrane\TusBundle\Bundle\TusBundle;
 use Nyholm\BundleTest\BaseBundleTestCase;
 
-class TusBundleTest extends BaseBundleTestCase
+class TusBundleTest extends BaseBundleTest
 {
-    protected function getBundleClass(): string
-    {
-        return TusBundle::class;
-    }
-
     public function testBundleRegistration(): void
     {
         $kernel = $this->getBootedKernel();
 
         self::assertInstanceOf(TusBundle::class, $kernel->getBundle('TusBundle'));
-    }
-
-    private function getBootedKernel(): \Nyholm\BundleTest\AppKernel
-    {
-        $kernel = $this->createKernel();
-        $kernel->boot();
-
-        return $kernel;
     }
 }
