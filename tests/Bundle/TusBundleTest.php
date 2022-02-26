@@ -14,7 +14,7 @@ class TusBundleTest extends BaseBundleTest
 {
     public function testBundleRegistration(): void
     {
-        $kernel = $this->getBootedKernel();
+        $kernel = $this->bootWithAdditionalDefinitions();
 
         self::assertInstanceOf(TusBundle::class, $kernel->getBundle('TusBundle'));
     }

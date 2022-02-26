@@ -8,16 +8,20 @@ declare(strict_types=1);
 
 namespace EFrane\TusBundle\Bundle\DependencyInjection;
 
+use EFrane\TusBundle\Bridge\NativeCacheStore;
 use EFrane\TusBundle\Bridge\ServerBridge;
 use EFrane\TusBundle\Bridge\ServerBridgeInterface;
 use EFrane\TusBundle\Controller\TusController;
 use EFrane\TusBundle\Middleware\MiddlewareCollection;
 use EFrane\TusBundle\Routing\RouteLoader;
+use LogicException;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use TusPhp\Cache\ApcuStore;
 use TusPhp\Cache\FileStore;
+use TusPhp\Cache\RedisStore;
 use TusPhp\Middleware\TusMiddleware;
 use TusPhp\Tus\Server;
 
@@ -74,12 +78,9 @@ class TusExtension extends Extension
      */
     private function registerTus(array $configuration, array &$definitions): void
     {
-        $fileStore = new Definition(FileStore::class, [
-            '$cacheDir' => $configuration['cache_dir'],
-        ]);
-        $fileStore->setLazy(true);
+        $fileStore = $this->configureCache($configuration['cache_type'], $configuration['cache_ttl']);
 
-        $definitions[FileStore::class] = $fileStore;
+        $definitions[$fileStore->getClass()] = $fileStore;
 
         $server = new Definition(Server::class, [
             '$cacheAdapter' => $fileStore,
@@ -131,5 +132,44 @@ class TusExtension extends Extension
         $interface->setLazy(true);
 
         $definitions[ServerBridgeInterface::class] = $interface;
+    }
+
+    private function configureCache(array $cacheConfig, int $ttl): Definition
+    {
+        /** @var Definition $cacheStore */
+        $cacheStore = null;
+
+        if ($cacheConfig['apcu']['enabled']) {
+            $cacheStore = new Definition(ApcuStore::class);
+        }
+
+        if ($cacheConfig['file']['enabled']) {
+            $cacheStore = new Definition(FileStore::class, [
+                '$cacheDir' => $cacheConfig['file']['dir'],
+                '$file'     => $cacheConfig['file']['name'],
+            ]);
+        }
+
+        if ($cacheConfig['native']['enabled']) {
+            $cacheStore = new Definition(NativeCacheStore::class);
+        }
+
+        if ($cacheConfig['redis']['enabled']) {
+            unset($cacheConfig['redis']['enabled']);
+
+            $cacheStore = new Definition(RedisStore::class, [
+                '$options' => $cacheConfig['redis']
+            ]);
+        }
+
+        if (null === $cacheStore) {
+            throw new LogicException('No cache defined.');
+        }
+
+        $cacheStore->addMethodCall('setTtl', [$ttl]);
+        $cacheStore->setAutowired(true);
+        $cacheStore->setLazy(true);
+
+        return $cacheStore;
     }
 }

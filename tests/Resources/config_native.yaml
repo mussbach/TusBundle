@@ -1,0 +1,4 @@
+tus:
+  cache_type:
+    native:
+      enabled: true
