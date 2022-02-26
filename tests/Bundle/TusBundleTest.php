@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace EFrane\TusBundle\Tests\Bundle;
 
 use EFrane\TusBundle\Bundle\TusBundle;
-use Nyholm\BundleTest\BaseBundleTestCase;
 
 class TusBundleTest extends BaseBundleTest
 {

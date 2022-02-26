@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace EFrane\TusBundle\Controller;
 
-use EFrane\TusBundle\Bridge\ServerBridge;
 use EFrane\TusBundle\Bridge\ServerBridgeInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
