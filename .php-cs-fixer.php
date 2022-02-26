@@ -4,14 +4,15 @@ $finder = PhpCsFixer\Finder::create()
     ->in('src')
     ->in('tests');
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+return $config
     ->setRiskyAllowed(true)
     ->setRules(
         [
             'array_syntax'           => ['syntax' => 'short'],
             '@PSR2'                  => true,
             '@Symfony'               => true,
-            'binary_operator_spaces' => ['align_equals' => false, 'align_double_arrow' => true],
+            'binary_operator_spaces' => ['default' => 'align', 'operators' => ['=' => 'single_space']],
         ]
     )
     ->setFinder($finder);
