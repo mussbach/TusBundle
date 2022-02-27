@@ -26,8 +26,10 @@ class RouteLoader extends Loader
      */
     private $apiPath;
 
-    public function __construct(string $apiPath)
+    public function __construct(string $apiPath, string $env = null)
     {
+        parent::__construct($env);
+
         $this->apiPath = $apiPath;
     }
 
