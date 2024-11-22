@@ -12,34 +12,66 @@ on:
       - 'composer.lock'
 
 jobs:
-  phpunit7_4:
-    name: PHPUnit @ PHP 7.4
+  phpunit8_0:
+    name: PHPUnit @ PHP 8.0
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
 
-      - uses: php-actions/composer@v5
+      - uses: php-actions/composer@v6
         with:
-          php_version: latest
+          php_version: 8.0
 
-      - uses: php-actions/phpunit@v2
+      - uses: php-actions/phpunit@v3
         with:
-          php_version: 7.4
+          php_version: 8.0
+
+  phpunit8_1:
+    name: PHPUnit @ PHP 8.1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: php-actions/composer@v6
+        with:
+          php_version: 8.1
+
+      - uses: php-actions/phpunit@v3
+        with:
+          php_version: 8.1
+
+  phpunit8_2:
+    name: PHPUnit @ PHP 8.2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: php-actions/composer@v6
+        with:
+          php_version: 8.2
+
+      - uses: php-actions/phpunit@v3
+        with:
+          php_version: 8.2
 
   phpunit_latest:
     name: PHPUnit @ PHP latest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
 
-      - uses: php-actions/composer@v5
+      - uses: php-actions/composer@v6
         with:
           php_version: latest
 
-      - uses: php-actions/phpunit@v2
+      - uses: php-actions/phpunit@v3
         with:
           php_version: latest
