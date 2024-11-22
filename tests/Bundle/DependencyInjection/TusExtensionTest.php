@@ -22,7 +22,13 @@ class TusExtensionTest extends AbstractExtensionTestCase
 
     public function testExtensionCanLoad(): void
     {
-        $this->load();
+        $this->load([
+            'cache_type' => [
+                'apcu' => [
+                    'enabled' => true,
+                ],
+            ],
+        ]);
 
         self::assertTrue($this->container->hasExtension('tus'));
     }
