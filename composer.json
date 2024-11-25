@@ -17,7 +17,7 @@
     "require-dev": {
         "matthiasnoback/symfony-dependency-injection-test": "^4.2",
         "nyholm/symfony-bundle-test": "^1.6",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "11.4.3",
         "phpstan/phpstan": "^1.4.6",
         "friendsofphp/php-cs-fixer": "^3.0"
     },
