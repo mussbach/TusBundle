@@ -4,12 +4,12 @@ namespace EFrane\TusBundle\Tests\Bundle;
 
 use EFrane\TusBundle\Bundle\TusBundle;
 use Nyholm\BundleTest\AppKernel;
-use Nyholm\BundleTest\BaseBundleTestCase;
+use Nyholm\BundleTest\BaseBundleTestCase as NyholmBaseBundleTestCase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-abstract class BaseBundleTest extends BaseBundleTestCase
+abstract class BaseBundleTestCase extends NyholmBaseBundleTestCase
 {
     protected function getBundleClass(): string
     {
@@ -28,7 +28,7 @@ abstract class BaseBundleTest extends BaseBundleTestCase
              */
             private $definitions = [];
 
-            public function process(ContainerBuilder $container)
+            public function process(ContainerBuilder $container): void
             {
                 $container->addDefinitions($this->definitions);
             }
